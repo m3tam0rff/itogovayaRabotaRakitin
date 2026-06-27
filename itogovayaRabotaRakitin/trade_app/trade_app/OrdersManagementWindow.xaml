@@ -1,0 +1,49 @@
+﻿<Window x:Class="TradeApp.OrdersManagementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TradeApp"
+        mc:Ignorable="d"
+        Title="Управление заказами" Height="500" Width="800"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource MainBackgroundBrush}">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+            <TextBlock Text="Поиск по номеру заказа:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBox x:Name="TbSearchOrderId" Width="150" TextChanged="TbSearchOrderId_TextChanged"/>
+            <Button Content="Обновить список" Margin="20,0,0,0" Click="BtnRefresh_Click"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="1" x:Name="DgOrders" AutoGenerateColumns="False" CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№ заказа" Binding="{Binding Id}" Width="80"/>
+                <DataGridTextColumn Header="Дата заказа" Binding="{Binding OrderDate, StringFormat=dd.MM.yyyy}" Width="120"/>
+                <DataGridTemplateColumn Header="Дата доставки" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding DeliveryDate, UpdateSourceTrigger=PropertyChanged}" Width="130"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Статус" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding StatusList}" SelectedItem="{Binding Status, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Клиент" Binding="{Binding CustomerName}" Width="200"/>
+                <DataGridTextColumn Header="Сумма, руб." Binding="{Binding TotalSum, StringFormat=N2}" Width="120"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="2" Content="Сохранить изменения" Margin="0,15,0,0" Click="BtnSaveChanges_Click"/>
+    </Grid>
+</Window>
